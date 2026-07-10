@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>ipdinvoice_detail - Overlay dropdown + Select2</title>
+
+  <!-- Bootstrap (ถ้าคุณมีอยู่แล้วจะใช้ของเดิมก็ได้) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+
+  <!-- Select2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+
+  <style>
+    /* กล่อง overlay สำหรับวาง select2 ลอยทับ cell */
+    #overlay-select {
+      position: absolute;
+      display: none;
+      z-index: 9999;
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
+      border-radius: .25rem;
+      padding: 4px; /* กัน select ชิดขอบเกินไป */
+    }
+    /* ให้ cell ที่เป็น dropdown มี cursor เป็น pointer */
+    td.cell-selectable { cursor: pointer; }
+
+    /* จัดชิดขวาสำหรับตัวเลข */
+    .text-end { text-align: right; }
+  </style>
+</head>
+<body class="p-3">
+
+  <h5 class="mb-3">IPD Invoice Detail (Overlay dropdown + Select2)</h5>
+
+  <table id="ipdinvoice_detail" class="display table table-sm table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Item</th>
+        <th class="text-end">Qty</th>
+        <th class="text-end">Unit Price</th>
+        <th class="text-end">Discount</th>
+        <th class="text-end">Amount</th>
+        <th class="text-end">Charge Type</th> <!-- ใช้ overlay dropdown -->
+        <th>Remark</th>                        <!-- contenteditable ธรรมดา -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-id="101">
+        <td>1</td>
+        <td>Drug A</td>
+        <td class="text-end editable-num" contenteditable="true" data-col="qty"         data-old="1"     data-value="1">1</td>
+        <td class="text-end editable-num" contenteditable="true" data-col="unit_price"  data-old="250.00" data-value="250.00">250.00</td>
+        <td class="text-end editable-num" contenteditable="true" data-col="discount"    data-old="0.00"  data-value="0.00">0.00</td>
+        <td class="text-end amount-cell" data-value="250.00">250.00</td>
+
+        <!-- cell-selectable = คลิกแล้วเปิด overlay -->
+        <td class="cell-selectable" data-col="charge_type" data-value="DRUG">DRUG</td>
+
+        <td class="editable-text" contenteditable="true" data-col="remark" data-old="">-</td>
+      </tr>
+
+      <tr data-id="102">
+        <td>2</td>
+        <td>Room Charge</td>
+        <td class="text-end editable-num" contenteditable="true" data-col="qty"         data-old="2"     data-value="2">2</td>
+        <td class="text-end editable-num" contenteditable="true" data-col="unit_price"  data-old="800.00" data-value="800.00">800.00</td>
+        <td class="text-end editable-num" contenteditable="true" data-col="discount"    data-old="50.00" data-value="50.00">50.00</td>
+        <td class="text-end amount-cell" data-value="1550.00">1,550.00</td>
+
+        <td class="cell-selectable" data-col="charge_type" data-value="ROOM">ROOM</td>
+
+        <td class="editable-text" contenteditable="true" data-col="remark" data-old="">พัก 2 คืน</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="5" class="text-end">ยอดรวม</th>
+        <th id="ipdinvoice_total" class="text-end">1,800.00</th>
+        <th colspan="2"></th>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- กล่อง overlay (วางครั้งเดียว ท้าย body) -->
+  <div id="overlay-select">
+    <select id="overlay-select-el" style="width: 100%;"></select>
+  </div>
+
+  <!-- jQuery / DataTables / Select2 -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <script>
+    // ====== ตัวเลือก Charge Type (ดึงจาก API ก็ได้) ======
+    const CHARGE_TYPES = [
+      { id: 'DRUG', text: 'DRUG' },
+      { id: 'LAB',  text: 'LAB'  },
+      { id: 'ROOM', text: 'ROOM' },
+      { id: 'MD',   text: 'MD FEE' },
+      { id: 'XRAY', text: 'XRAY' }
+    ];
+
+    // ====== Helpers ======
+    function toNumber(s){ return Number(String(s ?? '').replace(/[, ]/g,'')) || 0; }
+    function fmtMoney(n){ return toNumber(n).toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+    function recalcRowAmount($tr){
+      const qty  = toNumber($tr.find('[data-col="qty"]').attr('data-value'));
+      const unit = toNumber($tr.find('[data-col="unit_price"]').attr('data-value'));
+      const disc = toNumber($tr.find('[data-col="discount"]').attr('data-value'));
+      const amt  = Math.max(0, qty * unit - disc);
+      const $cell= $tr.find('.amount-cell');
+      $cell.attr('data-value', String(amt)).text(fmtMoney(amt));
+    }
+    function recalcInvoiceTotal(){
+      let total = 0;
+      $('#ipdinvoice_detail .amount-cell').each(function(){
+        total += toNumber(this.getAttribute('data-value'));
+      });
+      document.getElementById('ipdinvoice_total').textContent = fmtMoney(total);
+    }
+
+    // ====== DataTables init ======
+    const dt = $('#ipdinvoice_detail').DataTable({
+      paging: false,
+      info: false
+    });
+    dt.on('draw', () => {
+      // คืนค่า contenteditable เผื่อโดน redraw
+      $('#ipdinvoice_detail td.editable-num, #ipdinvoice_detail td.editable-text')
+        .attr('contenteditable','true');
+    });
+
+    // ====== Numeric editing (contenteditable) ======
+    // กัน paste rich text
+    $('#ipdinvoice_detail').on('paste','.editable-num, .editable-text',function(e){
+      e.preventDefault();
+      const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+      document.execCommand('insertText', false, text);
+    });
+    // จำกัด key เป็นตัวเลข/จุด/ลบ
+    $('#ipdinvoice_detail').on('beforeinput','.editable-num',function(e){
+      if (e.data && !/^[0-9.\-]$/.test(e.data)) e.preventDefault();
+    });
+    // Enter = save, Esc = revert
+    $('#ipdinvoice_detail').on('keydown','.editable-num, .editable-text',function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); this.blur(); }
+      if (e.key === 'Escape'){
+        this.textContent = this.dataset.old ?? this.textContent;
+        this.blur();
+      }
+    });
+    // blur = save
+    $('#ipdinvoice_detail').on('blur','.editable-num, .editable-text',function(){
+      const td   = this;
+      const $td  = $(td);
+      const $tr  = $td.closest('tr');
+      const id   = $tr.data('id');
+      const col  = $td.data('col');
+      let   val  = (td.textContent || '').trim();
+
+      if ($td.hasClass('editable-num')){
+        val = fmtMoney(val);
+        $td.text(val).attr('data-value', String(toNumber(val)));
+      } else {
+        val = val.replace(/\s+/g,' ').trim();
+      }
+
+      // คำนวณใหม่
+      recalcRowAmount($tr); recalcInvoiceTotal();
+
+      // === Mock Save (แทนที่ด้วย AJAX ของจริง) ===
+      fakeSave({ id, column: col, value: $td.hasClass('editable-num') ? toNumber(val) : val })
+        .then(()=> { $td.attr('data-old', val); })
+        .catch(()=> {
+          // revert เมื่อ fail
+          const old = $td.attr('data-old') ?? '';
+          $td.text(old);
+          if ($td.hasClass('editable-num')) $td.attr('data-value', String(toNumber(old)));
+          recalcRowAmount($tr); recalcInvoiceTotal();
+          alert('บันทึกไม่สำเร็จ');
+        });
+    });
+
+    // ====== Overlay dropdown (Select2) ======
+    const $overlay = $('#overlay-select');
+    const $sel     = $('#overlay-select-el');
+    let editingCell = null;  // <td> ที่กำลังแก้
+
+    // init select2 ครั้งเดียว
+    $sel.select2({
+      data: CHARGE_TYPES,
+      dropdownParent: $overlay,  // ให้ dropdown อยู่ใน overlay (กัน z-index เพี้ยน)
+      width: '100%',
+      placeholder: 'เลือกประเภท'
+    });
+
+    // คลิก cell → เปิด overlay ณ พิกัด cell
+    $('#ipdinvoice_detail').on('click', 'td.cell-selectable', function(){
+      const td = this;
+      if (editingCell === td) return;
+      editingCell = td;
+
+      // set ค่าเริ่มต้น
+      const current = td.dataset.value || td.textContent.trim();
+      $sel.val(current).trigger('change.select2'); // set selected
+
+      // คำนวณตำแหน่ง cell → วาง overlay
+      const rect = td.getBoundingClientRect();
+      $overlay.css({
+        left: window.scrollX + rect.left + 'px',
+        top:  window.scrollY + rect.top  + 'px',
+        width: rect.width + 'px',
+        display: 'block'
+      });
+
+      // โฟกัส select2
+      $sel.select2('open');
+
+      // จบการแก้ (select/change/close)
+      $sel.off('select2:select select2:close').on('select2:select', function(e){
+        finish(true, e.params.data.id);
+      }).on('select2:close', function(){
+        // ถ้าปิดโดยไม่เลือกใหม่ ให้ถือว่า cancel
+        finish(false);
+      });
+
+      function finish(save, newVal){
+        const $td = $(td);
+        const $tr = $td.closest('tr');
+        const id  = $tr.data('id');
+        const col = $td.data('col') || 'charge_type';
+        const val = save ? (newVal ?? current) : (td.dataset.value || current);
+
+        if (save){
+          // === Mock Save (แทนที่ด้วย AJAX ของจริง) ===
+          fakeSave({ id, column: col, value: val })
+            .then(()=>{
+              td.dataset.value = val;
+              td.textContent   = val;   // ถ้าอยากโชว์ label ที่ต่างจาก value ก็ map ได้
+              hideOverlay();
+            })
+            .catch(()=>{
+              alert('บันทึกไม่สำเร็จ');
+              hideOverlay();
+            });
+        } else {
+          hideOverlay();
+        }
+      }
+    });
+
+    // คลิกนอก overlay → ปิด
+    document.addEventListener('mousedown', (e) => {
+      if (!$overlay.is(':visible')) return;
+      if (!e.target.closest('#overlay-select') && !e.target.closest('td.cell-selectable')) {
+        hideOverlay();
+      }
+    });
+
+    function hideOverlay(){
+      $overlay.hide();
+      // ปิด dropdown ของ select2 ด้วย (กันค้าง)
+      try { $sel.select2('close'); } catch {}
+      editingCell = null;
+    }
+
+    // ====== Mock Save (แทนด้วย AJAX จริงของคุณ) ======
+    function fakeSave(payload){
+      // ตัวอย่าง: เปลี่ยนเป็น
+      // return $.ajax({ url:'/Invoice/UpdateCell', method:'POST', contentType:'application/json', data: JSON.stringify(payload) });
+      console.log('SAVE', payload);
+      return new Promise((res)=> setTimeout(res, 150)); // จำลองสำเร็จ
+    }
+
+    // คำนวณยอดรวมเริ่มต้น (หากยังไม่ถูกต้อง)
+    recalcInvoiceTotal();
+  </script>
+</body>
+</html>

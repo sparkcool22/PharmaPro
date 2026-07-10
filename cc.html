@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมคำนวณ RW</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .header-bg {
+            background-color: #1a237e; /* Navy blue color */
+        }
+    </style>
+</head>
+<body class="bg-light min-vh-100 d-flex flex-column align-items-center">
+
+    <!-- Header Section -->
+    <header class="w-100 header-bg shadow-lg p-4 d-flex justify-content-center align-items-center">
+        <h1 class="text-white fw-bold m-0 rounded-lg">
+            โปรแกรมคำนวณ RW
+        </h1>
+    </header>
+
+    <!-- Main Content Card -->
+    <main class="flex-grow-1 w-100 p-4 d-flex align-items-center justify-content-center">
+        <div class="bg-white p-5 rounded-4 shadow-lg w-100" style="max-width: 600px;">
+            <h2 class="text-center fw-bold text-dark mb-5">การคำนวณค่า RW</h2>
+            
+            <div class="row g-4">
+                <!-- จำนวนวันนอน Input -->
+                <div class="col-12">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <label for="los" class="form-label fs-5 fw-medium text-dark-emphasis">จำนวนวันนอน</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="number" id="los" value="3" class="form-control form-control-lg rounded-pill" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ราคา/RW Input -->
+                <div class="col-12">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <label for="pricePerRW" class="form-label fs-5 fw-medium text-dark-emphasis">ราคา/RW</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="number" id="pricePerRW" value="13483" class="form-control form-control-lg rounded-pill" min="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Run Button -->
+            <div class="d-grid gap-2 mt-5">
+                <button onclick="calculateRW()" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                    คำนวณ
+                </button>
+            </div>
+
+            <hr class="my-5">
+
+            <div class="row g-4">
+                <!-- ค่า DRG Output -->
+                <div class="col-12">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <div class="fs-5 fw-medium text-dark-emphasis">ค่า DRG</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div id="drgValue" class="form-control form-control-lg rounded-pill bg-light text-end fw-bold">08130</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ค่า RW Output -->
+                <div class="col-12">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <div class="fs-5 fw-medium text-dark-emphasis">ค่า RW</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div id="rwValue" class="form-control form-control-lg rounded-pill bg-light text-end fw-bold">1.7112</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ค่า ADJRW Output -->
+                <div class="col-12">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <div class="fs-5 fw-medium text-dark-emphasis">ค่า ADJRW</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div id="adjrwValue" class="form-control form-control-lg rounded-pill bg-light text-end fw-bold">1.7112</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- จำนวนเงิน Output -->
+                <div class="col-12">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <div class="fs-5 fw-medium text-dark-emphasis">จำนวนเงิน</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div id="totalAmount" class="form-control form-control-lg rounded-pill bg-primary-subtle text-end fw-bold text-primary">15,400.80</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5 text-secondary">
+                <p>Thai DRGs version</p>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        function calculateRW() {
+            // Get input values
+            const los = parseFloat(document.getElementById('los').value);
+            const pricePerRW = parseFloat(document.getElementById('pricePerRW').value);
+
+            // Assuming fixed values for demonstration as per the image
+            const drgValue = '08130';
+            const rwValue = 1.7112;
+            const adjrwValue = 1.7112;
+
+            // Calculate total amount
+            const totalAmount = adjrwValue * pricePerRW;
+
+            // Display results
+            document.getElementById('drgValue').innerText = drgValue;
+            document.getElementById('rwValue').innerText = rwValue.toFixed(4);
+            document.getElementById('adjrwValue').innerText = adjrwValue.toFixed(4);
+            document.getElementById('totalAmount').innerText = totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Menu with Bootstrap</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* ปรับสี hover/active ให้เป็นโทนอ่อนตามคำขอ */
+        .nav-link:hover, .dropdown-item:hover {
+            background-color: #e5e7eb !important;
+            color: #1f2937 !important;
+        }
+        
+        .nav-link:active {
+            background-color: #d1d5db !important;
+        }
+        
+        /* ปรับขนาดและรูปแบบของ container หลัก */
+        .main-container {
+            width: 100%;
+            max-width: 960px;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border: 1px solid #e5e7eb;
+        }
+        
+        /* ปรับ padding สำหรับ dropdown toggle */
+        .dropdown-toggle-custom {
+            padding: 1rem 1.5rem;
+        }
+
+        .dropdown-menu {
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- Container หลัก -->
+    <div class="main-container mx-auto">
+        <nav class="nav">
+            <!-- เมนูแรก -->
+            <a class="nav-link text-secondary fw-semibold py-3 px-4 rounded-3" href="#">
+                ภาพรวม
+            </a>
+
+            <!-- เมนูที่สอง -->
+            <a class="nav-link text-secondary fw-semibold py-3 px-4 rounded-3" href="#">
+                สรุปข้อมูล OPD
+            </a>
+
+            <!-- เมนูดรอปดาวน์ -->
+            <div class="nav-item dropdown">
+                <!-- ปุ่มสำหรับเปิด/ปิดดรอปดาวน์ -->
+                <a class="nav-link dropdown-toggle text-secondary fw-semibold py-3 px-4 rounded-3 dropdown-toggle-custom" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    รายละเอียดค่าใช้จ่าย
+                </a>
+
+                <!-- เนื้อหาของเมนูดรอปดาวน์ -->
+                <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#">เมนูย่อย 1</a></li>
+                    <li><a class="dropdown-item" href="#">เมนูย่อย 2</a></li>
+                    <li><a class="dropdown-item" href="#">เมนูย่อย 3</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

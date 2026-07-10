@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DataTable Child Rows</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables CSS/JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        td.details-control {
+            background: url('https://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+        tr.shown td.details-control {
+            background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+        }
+    </style>
+</head>
+<body>
+    <h2>DataTables - Parent with Child Table</h2>
+    <table id="parentTable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Patient ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Condition</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="details-control"></td>
+                <td>P001</td>
+                <td>John Doe</td>
+                <td>34</td>
+                <td>Fever</td>
+            </tr>
+            <tr>
+                <td class="details-control"></td>
+                <td>P002</td>
+                <td>Jane Smith</td>
+                <td>29</td>
+                <td>Cough</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // ฟังก์ชันสร้างตารางลูก (Child DataTable)
+        function format(patientId) {
+            // กำหนดข้อมูล mock สำหรับ child table
+            var data = {
+                "P001": [
+                    ["E101", "2025-08-01", "Paracetamol", "500mg"],
+                    ["E102", "2025-08-05", "Amoxicillin", "250mg"]
+                ],
+                "P002": [
+                    ["E201", "2025-08-03", "Ibuprofen", "200mg"],
+                    ["E202", "2025-08-07", "Vitamin C", "1000mg"]
+                ]
+            };
+
+            var html = `
+                <table class="childTable display" style="width:90%">
+                    <thead>
+                        <tr>
+                            <th>Encounter ID</th>
+                            <th>Date</th>
+                            <th>Medicine</th>
+                            <th>Dose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            if (data[patientId]) {
+                data[patientId].forEach(function (row) {
+                    html += `<tr>
+                        <td>${row[0]}</td>
+                        <td>${row[1]}</td>
+                        <td>${row[2]}</td>
+                        <td>${row[3]}</td>
+                    </tr>`;
+                });
+            }
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+            return html;
+        }
+
+        $(document).ready(function() {
+            var parentTable = $('#parentTable').DataTable();
+
+            // เมื่อกดปุ่มเปิด/ปิด
+            $('#parentTable tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = parentTable.row(tr);
+                var patientId = row.data()[1]; // column Patient ID
+
+                if (row.child.isShown()) {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                } else {
+                    row.child(format(patientId)).show();
+                    tr.addClass('shown');
+                    // สร้าง DataTable ภายใน child row
+                    tr.next().find('table.childTable').DataTable({
+                        paging: false,
+                        searching: false,
+                        info: false
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

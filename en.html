@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>Encounter Form (CSS only)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Bootstrap 5 (เฉพาะ CSS) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body{ background:#f8f9fa; }
+    .card{ border-radius:1rem; }
+    .mode-card{ display:none; }
+
+    /* === แสดง/ซ่อนด้วย CSS เท่านั้น === */
+    /* โครงสร้าง: [radio] ... [card-has] [card-none] */
+    #mode-has:checked  ~ #card-has  { display:block; }
+    #mode-none:checked ~ #card-none { display:block; }
+
+    /* ซ่อนไว้แต่เข้าถึงได้ให้ label คลิกแทน */
+    .visually-hidden{
+      position:absolute !important; clip:rect(0 0 0 0) !important;
+      width:1px !important; height:1px !important; margin:-1px !important; overflow:hidden !important;
+      white-space:nowrap !important; border:0 !important; padding:0 !important;
+    }
+
+    /* ปุ่ม radio แบบสวย ๆ ด้วย label */
+    .mode-toggle .btn{ min-width:12rem; }
+    /* สถานะ active ตาม radio ที่ถูกเลือก */
+    #mode-has:checked  + label[for="mode-has"]  { color:#fff; background-color:#0d6efd; border-color:#0d6efd; }
+    #mode-none:checked + label[for="mode-none"] { color:#fff; background-color:#6c757d; border-color:#6c757d; }
+
+    /* <details> ให้ดูเนียน */
+    details.summary-card > summary {
+      cursor:pointer; user-select:none;
+      padding:.625rem .75rem; border:1px solid #0d6efd; border-radius:.5rem; color:#0d6efd;
+      display:inline-block; list-style:none;
+    }
+    details.summary-card[open] > summary {
+      background:#e7f1ff; color:#0a58ca;
+    }
+    details.summary-card > summary::-webkit-details-marker { display:none; }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="h4 mb-4">Encounter Form (CSS Only, ไม่ใช้ JS)</h1>
+
+    <!-- เลือกโหมดก่อน -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header bg-dark text-white">เลือกโหมดการทำงาน</div>
+      <div class="card-body">
+        <div class="mode-toggle d-flex gap-2 flex-wrap" role="group" aria-label="เลือกโหมด">
+          <!-- ใส่ checked ที่ค่าเริ่มต้นที่ต้องการ -->
+          <input class="visually-hidden" type="radio" name="mode" id="mode-has"  />
+          <label class="btn btn-outline-primary" for="mode-has">มี Encounter</label>
+
+          <input class="visually-hidden" type="radio" name="mode" id="mode-none" checked />
+          <label class="btn btn-outline-secondary" for="mode-none">ไม่มี Encounter</label>
+        </div>
+        <div class="form-text mt-2">คลิกเลือกโหมดด้านบน แล้วฟอร์มที่เกี่ยวข้องจะปรากฏขึ้น</div>
+      </div>
+    </div>
+
+    <!-- =============== โหมด: มี Encounter =============== -->
+    <div id="card-has" class="card mb-4 shadow-sm mode-card">
+      <div class="card-header bg-primary text-white">กรณีมี Encounter</div>
+      <div class="card-body">
+        <form autocomplete="off">
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label for="predate" class="form-label">Predate (เลือกวันที่)</label>
+              <input type="date" class="form-control" id="predate" name="predate">
+            </div>
+            <div class="col-12 col-md-6">
+              <label for="encounterSelect" class="form-label">Encounter</label>
+              <select id="encounterSelect" name="encounter" class="form-select">
+                <option value="" selected disabled>— เลือก Encounter —</option>
+                <option value="E25090123">E25090123</option>
+                <option value="E25090124">E25090124</option>
+                <option value="E25090125">E25090125</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- =============== โหมด: ไม่มี Encounter =============== -->
+    <div id="card-none" class="card shadow-sm mode-card">
+      <div class="card-header bg-secondary text-white">กรณีไม่มี Encounter</div>
+      <div class="card-body">
+        <form autocomplete="off">
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label for="encType" class="form-label">Encounter Type</label>
+              <select id="encType" name="encounter_type" class="form-select">
+                <option value="" selected disabled>— เลือกประเภท —</option>
+                <option value="EMER">EMER</option>
+                <option value="AMB">AMB</option>
+                <option value="OTH">OTH</option>
+              </select>
+            </div>
+
+            <div class="col-12 col-md-6 d-flex align-items-end">
+              <!-- ไม่ใช้ JS: ใช้ <details> เพื่อเปิดช่องกรอก -->
+              <details class="summary-card">
+                <summary>Create New Encounter</summary>
+                <div class="mt-3">
+                  <div class="form-floating">
+                    <input type="text" id="newEncounterInput" class="form-control" placeholder="ระบุ Encounter ใหม่">
+                    <label for="newEncounterInput">ระบุ Encounter ใหม่</label>
+                  </div>
+                  <div class="form-text">*คลิกอีกครั้งที่ “Create New Encounter” เพื่อปิด</div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

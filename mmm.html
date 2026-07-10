@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>ลากสลับแถว (ไม่พึ่ง CDN/ปลั๊กอิน)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 18px; }
+    table { border-collapse: collapse; width: 420px; }
+    th, td { border: 1px solid #ccc; padding: 8px 10px; }
+    tbody tr { background: #fff; }
+    tbody tr.dragging { opacity: 0.5; }
+    td.handle { cursor: grab; user-select: none; white-space: nowrap; }
+    .grip { margin-right: 6px; }
+    .drop-indicator { height: 0; border-top: 2px solid #0078d4; margin: 0 -10px; }
+  </style>
+</head>
+<body>
+  <h3>ตารางพนักงาน (ลากสลับแถวได้จริง • ออฟไลน์ได้)</h3>
+
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th style="width:90px;">ลำดับ</th>
+        <th>ชื่อ</th>
+        <th>ตำแหน่ง</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr draggable="true"><td class="handle"><span class="grip">☰</span>1</td><td>Alice</td><td>Developer</td></tr>
+      <tr draggable="true"><td class="handle"><span class="grip">☰</span>2</td><td>Bob</td><td>Designer</td></tr>
+      <tr draggable="true"><td class="handle"><span class="grip">☰</span>3</td><td>Charlie</td><td>QA</td></tr>
+      <tr draggable="true"><td class="handle"><span class="grip">☰</span>4</td><td>Daisy</td><td>PM</td></tr>
+      <tr draggable="true"><td class="handle"><span class="grip">☰</span>5</td><td>Eve</td><td>BA</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    (function () {
+      const tbody = document.querySelector('#tbl tbody');
+      let draggingRow = null;
+      let indicator = document.createElement('div');
+      indicator.className = 'drop-indicator';
+
+      // set draggable only when grab the handle (optional safety)
+      tbody.addEventListener('mousedown', e => {
+        const tr = e.target.closest('tr');
+        const isHandle = e.target.closest('.handle');
+        if (tr && isHandle) tr.setAttribute('draggable', 'true');
+      });
+      tbody.addEventListener('mouseup', e => {
+        const tr = e.target.closest('tr');
+        if (tr) tr.setAttribute('draggable', 'true'); // keep it draggable
+      });
+
+      tbody.addEventListener('dragstart', e => {
+        draggingRow = e.target.closest('tr');
+        if (!draggingRow) return;
+        draggingRow.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        // for Firefox: must set data
+        e.dataTransfer.setData('text/plain', '');
+      });
+
+      tbody.addEventListener('dragend', () => {
+        if (draggingRow) draggingRow.classList.remove('dragging');
+        draggingRow = null;
+        removeIndicator();
+        renumber();
+      });
+
+      tbody.addEventListener('dragover', e => {
+        if (!draggingRow) return;
+        e.preventDefault(); // allow drop
+        const after = getRowAfterY(tbody, e.clientY);
+        showIndicator(after);
+      });
+
+      tbody.addEventListener('drop', e => {
+        if (!draggingRow) return;
+        e.preventDefault();
+        const after = getRowAfterY(tbody, e.clientY);
+        if (after == null) {
+          tbody.appendChild(draggingRow);
+        } else {
+          tbody.insertBefore(draggingRow, after);
+        }
+        removeIndicator();
+        renumber();
+      });
+
+      function getRowAfterY(container, y) {
+        const rows = [...container.querySelectorAll('tr:not(.dragging)')];
+        let closest = null;
+        let closestOffset = Number.NEGATIVE_INFINITY;
+        for (const row of rows) {
+          const box = row.getBoundingClientRect();
+          const offset = y - (box.top + box.height / 2);
+          if (offset < 0 && offset > closestOffset) {
+            closestOffset = offset;
+            closest = row;
+          }
+        }
+        return closest; // null = drop at end
+      }
+
+      function renumber() {
+        [...tbody.rows].forEach((tr, i) => {
+          const firstCell = tr.cells[0];
+          const grip = firstCell.querySelector('.grip') ? '' : '<span class="grip">☰</span>';
+          firstCell.classList.add('handle');
+          firstCell.innerHTML = '<span class="grip">☰</span>' + (i + 1);
+        });
+      }
+
+      function showIndicator(beforeRow) {
+        removeIndicator();
+        if (beforeRow) {
+          beforeRow.insertAdjacentElement('beforebegin', indicator);
+        } else {
+          tbody.appendChild(indicator);
+        }
+      }
+      function removeIndicator() {
+        if (indicator.parentNode) indicator.parentNode.removeChild(indicator);
+      }
+    })();
+  </script>
+</body>
+</html>

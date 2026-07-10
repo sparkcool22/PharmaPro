@@ -1,0 +1,151 @@
+body {
+    background: rgb(255, 255, 255);
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 38%, rgba(217, 217, 217, 1) 100%);
+}
+
+.navbarCustom {
+    background: rgba(246, 30, 141.0.5);
+    /* background: linear-gradient(180deg, rgba(246, 30, 141, 0.9) 0%, rgba(243, 1, 0, 0.9) 100%); */
+    /* background: linear-gradient(180deg, rgba(255, 193, 7, 0.9) 60%, rgba(255, 193, 7, 0.9) 100%); */
+    background: linear-gradient(180deg, rgba(228, 228, 228, 0.6) 0%, rgba(243, 243, 243, 0.9) 100%);
+    /* background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.9) 100%); */
+
+    /* background: rgb(246,30,141);
+    background: linear-gradient(90deg, rgba(246,30,141,1) 0%, rgba(243,1,0,1) 100%);
+    background-size: 100% 100%; */
+}
+
+.footerCustom {
+    background: rgb(246, 30, 141);
+    background: linear-gradient(90deg, rgba(246, 30, 141, 1) 0%, rgba(243, 1, 0, 1) 100%);
+    background-size: 100% 100%;
+}
+
+.cardActionIndex {
+    transition: all 1s ease-in-out !important;
+    /* Animation */
+    transform: scale(1);
+}
+
+.cardActionIndex:hover {
+    transition: all 1s ease-in-out !important;
+    /* Animation */
+    transform: scale(1.05);
+    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.cardActionRegister {
+    transition: all 1s ease-in-out !important;
+    /* Animation */
+    transform: scale(1);
+}
+
+.cardActionRegister:hover {
+    transition: all 1s ease-in-out !important;
+    /* Animation */
+    transform: scale(1.02);
+    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.welcomeAlert {
+    background: rgb(55, 55, 55);
+    background: linear-gradient(0deg, rgba(55, 55, 55, 1) 0%, rgba(255, 0, 0, 1) 100%);
+    /* background: rgba(246,30,141.0.5);
+    background: linear-gradient(180deg, rgba(246,30,141,0.9) 0%, rgba(243,1,0,0.9) 100%); */
+}
+
+.cardActionShadowC {
+    box-shadow: rgba(139, 139, 139, 0.35) 0px 3px 10px;
+}
+
+.cardActionShadowM {
+    box-shadow: rgba(197, 197, 197, 0.35) 0px 1px 5px;
+}
+
+.actionHeaderText{
+    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.5));
+}
+
+#curdate, #curtime {
+    margin-bottom: 0; /* ลดระยะห่างด้านล่างของแต่ละบรรทัด */
+    line-height: 1.4; /* ลดความสูงของแต่ละบรรทัด */
+}
+
+.custom-row {
+    margin-bottom: -10px; /* ปรับระยะห่างตามต้องการ */
+}
+
+/* ซ่อน Summernote container เริ่มต้น */
+#summernote-container {
+    display: none;
+}
+
+#toggleButton {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+
+#ordertable {
+    width: 100%;
+    border-collapse: separate; /* รวมขอบ */
+    border-spacing: 0; /* ลดช่องว่างระหว่างเซลล์ */
+    border: 5px solid rgba(255, 255, 255, 0.75); /* ขอบรอบตาราง */
+    border-radius: 20px; /* ทำขอบมน */
+    overflow: hidden; /* ทำให้ขอบมนทำงาน */
+    box-shadow: 0 0 20px rgb(255, 255, 255); /* เพิ่มเงารอบขอบ */
+}
+
+#ordertable th, #ordertable td {
+    border: 2px solid #DEE2E6; /* ขอบของเซลล์ */
+    padding: 5px; /* ระยะห่างภายใน */
+    text-align: center;
+    font-size: 15px;
+}
+
+#ordertable th {
+    padding: 8px; /* ระยะห่างภายใน */
+    background-color: #E83E8C; /* สีพื้นหลังหัวตาราง */
+    color: white; /* สีตัวอักษร */
+}
+
+/* เพิ่มขอบรอบตาราง */
+#ordertable::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 5px solid black; /* ขอบรอบตาราง */
+    border-radius: 15px; /* ทำขอบมน */
+    pointer-events: none; /* ไม่กระทบการโต้ตอบ */
+    z-index: -1; /* อยู่ด้านหลัง */
+    box-shadow: 0 0 20px rgb(255, 255, 255); /* เพิ่มเงา */
+}
+
+
+
+/* ทำให้แถวที่เป็นเลขคี่มีพื้นหลังสีขาว */
+#ordertable tr:nth-child(odd) {
+    background-color: #fff; /* สีขาว */
+}
+
+/* ทำให้แถวที่เป็นเลขคู่มีพื้นหลังสีเทา */
+#ordertable tr:nth-child(even) {
+    background-color: #F2F2F2; /* สีเทา */
+}
+
+#orderperbill {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #0066CB;
+    color: #FCFF84;
+    border: 1px solid #DEE2E6;
+
+}
+
+#orderperbill td {
+    border: 0px solid #DEE2E6;
+    /* padding: 15px; */
+}

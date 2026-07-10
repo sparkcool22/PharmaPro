@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<title>DT + SortableJS + Editable & Dropdown</title>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<style>
+  body{font-family:Tahoma,Arial,sans-serif;margin:20px}
+  table.dataTable td.handle{cursor:move;text-align:center;width:42px}
+  table.dataTable td.handle::before{content:"≡";font-size:18px;opacity:.8}
+  td[contenteditable="true"]{outline:0;padding:6px 8px;min-width:120px;border-radius:4px}
+  td[contenteditable="true"]:focus{box-shadow:0 0 0 2px #d0e7ff}
+  .btn{display:inline-block;padding:8px 12px;border:1px solid #ddd;border-radius:8px;background:#f7f7f7;cursor:pointer;margin:0 0 12px 0}
+  .btn:hover{background:#eee}
+  select{padding:4px 6px}
+</style>
+</head>
+<body>
+
+<h3>ลากสลับแถว + ช่องแก้ไข + Dropdown (ไม่เด้งกลับ)</h3>
+<button id="btnSave" class="btn">💾 แสดง payload</button>
+
+<table id="myTable" class="display" style="width:100%">
+  <thead>
+    <tr>
+      <th>ลำดับ</th>
+      <th>ลาก</th>
+      <th>ID</th>
+      <th>ชื่อ (แก้ไขได้)</th>
+      <th>ตำแหน่ง (เลือกได้)</th>
+    </tr>
+  </thead>
+  <tbody id="tbody">
+    <tr data-id="101">
+      <td class="idx">1</td>
+      <td class="handle"></td>
+      <td>101</td>
+      <td contenteditable="true">สมชาย</td>
+      <td>
+        <select>
+          <option value="mgr">ผู้จัดการ</option>
+          <option value="staff">เจ้าหน้าที่</option>
+          <option value="dev">นักพัฒนา</option>
+          <option value="acc">บัญชี</option>
+        </select>
+      </td>
+    </tr>
+    <tr data-id="102">
+      <td class="idx">2</td>
+      <td class="handle"></td>
+      <td>102</td>
+      <td contenteditable="true">สมหญิง</td>
+      <td>
+        <select>
+          <option value="mgr">ผู้จัดการ</option>
+          <option value="staff" selected>เจ้าหน้าที่</option>
+          <option value="dev">นักพัฒนา</option>
+          <option value="acc">บัญชี</option>
+        </select>
+      </td>
+    </tr>
+    <tr data-id="103">
+      <td class="idx">3</td>
+      <td class="handle"></td>
+      <td>103</td>
+      <td contenteditable="true">อนันต์</td>
+      <td>
+        <select>
+          <option value="mgr">ผู้จัดการ</option>
+          <option value="staff">เจ้าหน้าที่</option>
+          <option value="dev" selected>นักพัฒนา</option>
+          <option value="acc">บัญชี</option>
+        </select>
+      </td>
+    </tr>
+    <tr data-id="104">
+      <td class="idx">4</td>
+      <td class="handle"></td>
+      <td>104</td>
+      <td contenteditable="true">วิภา</td>
+      <td>
+        <select>
+          <option value="mgr">ผู้จัดการ</option>
+          <option value="staff">เจ้าหน้าที่</option>
+          <option value="dev">นักพัฒนา</option>
+          <option value="acc" selected>บัญชี</option>
+        </select>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Payload</h4>
+<pre id="out">[ยังไม่ได้กดปุ่ม]</pre>
+
+<script>
+$(function(){
+  // 1) DataTables: ปิดการสั่นไหวของ DOM
+  const dt = $('#myTable').DataTable({
+    searching:false, paging:false, info:false, ordering:false, autoWidth:false
+  });
+
+  const tbody = document.getElementById('tbody');
+
+  // ---- Event delegation (แก้ไขชื่อ) ----
+  // เก็บค่าได้ทั้งตอน blur หรือ enter
+  tbody.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.isContentEditable) {
+      e.preventDefault();
+      e.target.blur();
+    }
+  });
+
+  // ---- SortableJS ----
+  new Sortable(tbody, {
+    handle: '.handle',
+    animation: 150,
+    onSort: function(){
+      renumber(); // อัปเดตเลขลำดับ DOM
+      hardSyncDT(); // sync กับ DataTables (กันเด้งกลับ)
+    }
+  });
+
+  function renumber(){
+    [...tbody.rows].forEach((tr,i)=> tr.querySelector('.idx').textContent = i+1);
+  }
+
+  function hardSyncDT(){
+    const rows = [...tbody.rows]; // ใช้ node เดิม (รักษาค่า/สถานะ input/select)
+    dt.clear();
+    dt.rows.add(rows).draw(false);
+    renumber(); // ย้ำอีกครั้งหลัง draw
+  }
+
+  // 3) ปุ่ม “บันทึก” — อ่านค่าจาก DOM (ไม่พึ่ง data cache)
+  $('#btnSave').on('click', function(){
+    const payload = [...tbody.rows].map((tr,i) => {
+      const id = Number(tr.dataset.id);
+      const name = tr.cells[3].textContent.trim();           // contenteditable cell
+      const role = tr.cells[4].querySelector('select').value; // dropdown
+      return { id, name, role, sort_order: (i+1)*10 };
+    });
+    $('#out').text(JSON.stringify(payload, null, 2));
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายงานค่าใช้จ่ายด้านการรักษาสิทธิ์ราชการ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN สำหรับ icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .report-header {
+            background-color: #1a237e; /* สีกรม */
+            color: white;
+        }
+        .summary-card {
+            background-color: #e0f7fa; /* สีฟ้าอ่อน */
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f9fafb; /* สีเทาอ่อนสลับแถว */
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        /* Custom styles for claim table to match original */
+        .claim-table th, .claim-table td {
+            padding: 8px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-button.active {
+            background-color: #f3f4f6;
+            color: #1a237e;
+            border-bottom-color: #1a237e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mx-auto p-6 bg-white shadow-xl rounded-2xl my-8">
+
+    <!-- Header Section -->
+    <div class="report-header p-6 rounded-t-2xl flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold">รายงานค่าใช้จ่ายด้านการรักษาสิทธิ์ราชการ</h1>
+            <p class="text-sm font-light mt-2">กรมตรวจสอบสถานะหนี้สินอุปถัมภ์ (IPD) (ว.ค.328/57)</p>
+        </div>
+        <div class="flex space-x-4">
+            <button class="bg-white text-gray-800 font-semibold py-2 px-4 rounded-full shadow-md hover:bg-gray-200 transition-colors duration-200"><i class="fas fa-print mr-2"></i>พิมพ์</button>
+            <button class="bg-white text-gray-800 font-semibold py-2 px-4 rounded-full shadow-md hover:bg-gray-200 transition-colors duration-200"><i class="fas fa-file-pdf mr-2"></i>บันทึก PDF</button>
+        </div>
+    </div>
+    
+    <!-- User Information -->
+    <div class="p-6 bg-gray-50 rounded-b-2xl border-t border-gray-200">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-700 font-medium">
+            <div>
+                <p>HN: <span class="font-bold text-gray-900">51-502-17</span></p>
+                <p>เลขที่ใบรับรอง: <span class="font-bold text-gray-900">2205157</span></p>
+            </div>
+            <div>
+                <p>ชื่อ-นามสกุล: <span class="font-bold text-gray-900">น.ส. สุนีย์ มะกรูดอินทร์</span></p>
+                <p>วันที่เข้ารับการรักษา: <span class="font-bold text-gray-900">20/07/2025</span></p>
+            </div>
+            <div>
+                <p>วันที่ออกจากโรงพยาบาล: <span class="font-bold text-gray-900">24/07/2025</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Buttons Section -->
+    <div class="bg-white rounded-xl mt-6">
+        <div class="flex flex-wrap border-b border-gray-200">
+            <!-- Row 1: 8 tabs -->
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200 active" onclick="openTab(event, 'tab1')">Tab 1</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab2')">Tab 2</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab3')">Tab 3</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab4')">Tab 4</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab5')">Tab 5</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab6')">Tab 6</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab7')">Tab 7</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab8')">Tab 8</button>
+            <!-- Row 2: 8 tabs -->
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab9')">Tab 9</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab10')">Tab 10</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab11')">Tab 11</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab12')">Tab 12</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab13')">Tab 13</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab14')">Tab 14</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab15')">Tab 15</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab16')">Tab 16</button>
+            <!-- Row 3: 3 tabs -->
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab17')">Tab 17</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab18')">Tab 18</button>
+            <button class="tab-button p-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 text-gray-500 transition-colors duration-200" onclick="openTab(event, 'tab19')">Tab 19</button>
+        </div>
+
+        <!-- Tab Content Section -->
+        <div id="tab1" class="tab-content active p-6">
+            <!-- Detailed Cost Table (Main Table) -->
+            <div class="overflow-x-auto shadow-lg rounded-xl">
+                <table class="min-w-full divide-y divide-gray-200 bg-white rounded-xl">
+                    <thead class="bg-gray-50 sticky-header">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Group</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Gr Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Amount</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Amt_Claim</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Amt_Paid</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Amt_Disc</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- ตัวอย่างแถวข้อมูล -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0101</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ค่าห้อง</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2400.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2400.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0.00</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0201</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ค่ายาและเวชภัณฑ์/อุปกรณ์ในการบำบัดรักษาโรค</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1686.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">85.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1601.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0.00</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0301</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ค่ายาและสารอาหารทางเส้นเลือดที่ใช้ในโรงพยาบาล</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">467.50</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">421.75</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">45.75</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0.00</td>
+                        </tr>
+                        <!-- เพิ่มแถวข้อมูลอื่นๆ ตามต้องการ -->
+                        <!-- Row for Total Summary -->
+                        <tr class="bg-gray-100 font-bold">
+                            <td colspan="2" class="px-6 py-4 text-right text-base text-gray-700">รวมทั้งหมด</td>
+                            <td class="px-6 py-4 text-base text-gray-900">36,834.25</td>
+                            <td class="px-6 py-4 text-base text-gray-900">34,843.00</td>
+                            <td class="px-6 py-4 text-base text-gray-900">1,991.25</td>
+                            <td class="px-6 py-4 text-base text-gray-900">0.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Main Content Container with two columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mt-6">
+                <!-- Claim Table (55%) -->
+                <div class="lg:col-span-3">
+                    <div class="overflow-x-auto shadow-lg rounded-xl">
+                        <h2 class="bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-t-xl">รายการ Claim</h2>
+                        <table class="w-full claim-table bg-white rounded-xl">
+                            <thead>
+                                <tr class="bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                    <th class="px-4 py-2">สิทธิ์</th>
+                                    <th class="px-4 py-2">Stat</th>
+                                    <th class="px-4 py-2">Type</th>
+                                    <th class="px-4 py-2">Payer</th>
+                                    <th class="px-4 py-2">Amount</th>
+                                    <th class="px-4 py-2">สถานะ</th>
+                                    <th class="px-4 py-2">flag_claim</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>LGO</td>
+                                    <td>A</td>
+                                    <td>C</td>
+                                    <td>50087</td>
+                                    <td>-19.00</td>
+                                    <td>ออกเลขตั้งเบิก</td>
+                                    <td>S</td>
+                                </tr>
+                                <tr>
+                                    <td>LGO</td>
+                                    <td>A</td>
+                                    <td>I</td>
+                                    <td>50087</td>
+                                    <td>34862.00</td>
+                                    <td>ออกเลขตั้งเบิก</td>
+                                    <td>S</td>
+                                </tr>
+                                <tr>
+                                    <td>UNK</td>
+                                    <td>A</td>
+                                    <td>I</td>
+                                    <td>1991.25</td>
+                                    <td>ออกเลขตั้งเบิก</td>
+                                    <td>S</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Summary Cards (Vertical Layout) (45%) -->
+                <div class="lg:col-span-2">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">สรุปค่าใช้จ่าย</h2>
+                    <div class="flex flex-col space-y-4">
+                        <!-- ยอดรวมทั้งหมด (100%) -->
+                        <div class="summary-card p-6 rounded-xl shadow-lg border border-gray-200">
+                            <p class="text-gray-600">ยอดรวมทั้งหมด</p>
+                            <p class="text-3xl font-bold text-blue-800 mt-2 text-right">36,834.25</p>
+                        </div>
+                        
+                        <!-- แถวที่ 2 (50%/50%) -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="summary-card p-6 rounded-xl shadow-lg border border-gray-200">
+                                <p class="text-gray-600">ยอดที่ใช้สิทธิ์</p>
+                                <p class="text-3xl font-bold text-green-800 mt-2 text-right">34,843.00</p>
+                            </div>
+                            <div class="summary-card p-6 rounded-xl shadow-lg border border-gray-200">
+                                <p class="text-gray-600">ยอดสิทธิ์ส่งเบิก</p>
+                                <p class="text-3xl font-bold text-green-800 mt-2 text-right">34,862.00</p>
+                            </div>
+                        </div>
+
+                        <!-- แถวที่ 3 (50%/50%) -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="summary-card p-6 rounded-xl shadow-lg border border-gray-200">
+                                <p class="text-gray-600">ยอดที่จ่ายเอง</p>
+                                <p class="text-3xl font-bold text-yellow-800 mt-2 text-right">1,991.25</p>
+                            </div>
+                            <div class="summary-card p-6 rounded-xl shadow-lg border border-gray-200">
+                                <p class="text-gray-600">เงินสด</p>
+                                <p class="text-3xl font-bold text-yellow-800 mt-2 text-right">0.00</p>
+                            </div>
+                        </div>
+                        
+                        <!-- แถวที่ 4 (50%/50%) -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="summary-card p-6 rounded-xl shadow-lg border border-gray-200">
+                                <p class="text-gray-600">ส่วนลด</p>
+                                <p class="text-3xl font-bold text-red-800 mt-2 text-right">0.00</p>
+                            </div>
+                            <div class="summary-card p-6 rounded-xl shadow-lg border border-gray-200">
+                                <p class="text-gray-600">รอยืนยัน</p>
+                                <p class="text-3xl font-bold text-red-800 mt-2 text-right">0.00</p>
+                            </div>
+                        </div>
+                        
+                        <!-- แถวที่ 5 (50%/50%) -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="summary-card p-6 rounded-xl shadow-lg border border-gray-200">
+                                <p class="text-gray-600">ยอดที่ยกเลิก</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-2 text-right">0.00</p>
+                            </div>
+                            <div class="summary-card p-6 rounded-xl shadow-lg border border-gray-200">
+                                <p class="text-gray-600">เบิกopd</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-2 text-right">0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Placeholder for other tabs content -->
+        <div id="tab2" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 2</p></div>
+        <div id="tab3" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 3</p></div>
+        <div id="tab4" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 4</p></div>
+        <div id="tab5" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 5</p></div>
+        <div id="tab6" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 6</p></div>
+        <div id="tab7" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 7</p></div>
+        <div id="tab8" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 8</p></div>
+        <div id="tab9" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 9</p></div>
+        <div id="tab10" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 10</p></div>
+        <div id="tab11" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 11</p></div>
+        <div id="tab12" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 12</p></div>
+        <div id="tab13" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 13</p></div>
+        <div id="tab14" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 14</p></div>
+        <div id="tab15" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 15</p></div>
+        <div id="tab16" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 16</p></div>
+        <div id="tab17" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 17</p></div>
+        <div id="tab18" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 18</p></div>
+        <div id="tab19" class="tab-content p-6"><p class="text-gray-700">เนื้อหาสำหรับ Tab 19</p></div>
+    </div>
+
+    <!-- Action Buttons at the bottom -->
+    <div class="p-4 mt-6 flex space-x-2 justify-end">
+        <button class="bg-gray-400 text-white font-semibold py-2 px-6 rounded-full shadow hover:bg-gray-500 transition-colors duration-200">ยกเลิก</button>
+        <button class="bg-red-600 text-white font-semibold py-2 px-6 rounded-full shadow hover:bg-red-700 transition-colors duration-200">ยกเลิก (OPD)</button>
+    </div>
+
+</div>
+
+<script>
+    // JavaScript สำหรับจัดการ Tab
+    function openTab(evt, tabId) {
+        // ประกาศตัวแปร
+        var i, tabcontent, tabbuttons;
+        
+        // ซ่อนเนื้อหาทั้งหมด
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove("active");
+        }
+        
+        // ลบ class "active" ออกจากปุ่มทั้งหมด
+        tabbuttons = document.getElementsByClassName("tab-button");
+        for (i = 0; i < tabbuttons.length; i++) {
+            tabbuttons[i].classList.remove("active");
+        }
+        
+        // แสดงเนื้อหาของ Tab ที่ถูกเลือก และเพิ่ม class "active" ให้กับปุ่มนั้น
+        document.getElementById(tabId).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    // แสดง Tab แรกเมื่อโหลดหน้า
+    window.onload = function() {
+        document.querySelector('.tab-button').click();
+    };
+</script>
+
+</body>
+</html>

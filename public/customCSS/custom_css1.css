@@ -1,0 +1,179 @@
+body {
+    background: rgb(255, 255, 255);
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 38%, rgba(217, 217, 217, 1) 100%);
+}
+
+.navbarCustom {
+    background: rgba(246, 30, 141.0.5);
+    /* background: linear-gradient(180deg, rgba(246, 30, 141, 0.9) 0%, rgba(243, 1, 0, 0.9) 100%); */
+    /* background: linear-gradient(180deg, rgba(255, 193, 7, 0.9) 60%, rgba(255, 193, 7, 0.9) 100%); */
+    background: linear-gradient(180deg, rgba(228, 228, 228, 0.6) 0%, rgba(243, 243, 243, 0.9) 100%);
+    /* background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.9) 100%); */
+
+    /* background: rgb(246,30,141);
+    background: linear-gradient(90deg, rgba(246,30,141,1) 0%, rgba(243,1,0,1) 100%);
+    background-size: 100% 100%; */
+}
+
+.footerCustom {
+    background: rgb(246, 30, 141);
+    background: linear-gradient(90deg, rgba(246, 30, 141, 1) 0%, rgba(243, 1, 0, 1) 100%);
+    background-size: 100% 100%;
+}
+
+.cardActionIndex {
+    transition: all 1s ease-in-out !important;
+    /* Animation */
+    transform: scale(1);
+}
+
+.cardActionIndex:hover {
+    transition: all 1s ease-in-out !important;
+    /* Animation */
+    transform: scale(1.05);
+    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.cardActionRegister {
+    transition: all 1s ease-in-out !important;
+    /* Animation */
+    transform: scale(1);
+}
+
+.cardActionRegister:hover {
+    transition: all 1s ease-in-out !important;
+    /* Animation */
+    transform: scale(1.02);
+    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.welcomeAlert {
+    background: rgb(55, 55, 55);
+    background: linear-gradient(0deg, rgba(55, 55, 55, 1) 0%, rgba(255, 0, 0, 1) 100%);
+    /* background: rgba(246,30,141.0.5);
+    background: linear-gradient(180deg, rgba(246,30,141,0.9) 0%, rgba(243,1,0,0.9) 100%); */
+}
+
+.cardActionShadowC {
+    box-shadow: rgba(139, 139, 139, 0.35) 0px 3px 10px;
+}
+
+.cardActionShadowM {
+    box-shadow: rgba(197, 197, 197, 0.35) 0px 1px 5px;
+}
+
+.actionHeaderText{
+    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.5));
+}
+
+#curdate, #curtime {
+    margin-bottom: 0; /* ลดระยะห่างด้านล่างของแต่ละบรรทัด */
+    line-height: 1.4; /* ลดความสูงของแต่ละบรรทัด */
+}
+
+.custom-row {
+    margin-bottom: -10px; /* ปรับระยะห่างตามต้องการ */
+}
+
+/* ซ่อน Summernote container เริ่มต้น */
+#summernote-container {
+    display: none;
+}
+
+#toggleButton {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#ordertable {
+    width: 100%;
+    border-collapse: collapse;
+    border: 5px solid  black ; /* ขอบรอบตาราง */
+    border-radius: 15px ; /* ขอบมน */
+    overflow: hidden; /* ทำให้ขอบที่มุมมีผล */
+    box-shadow:  0 0 20px rgb(255, 255, 255); /* เงารอบขอบเพื่อให้ชัดเจน */
+}
+
+#ordertable th {
+    border: 2px solid #DEE2E6;
+    padding: 8px;
+    text-align: center;
+}
+
+#ordertable td {
+    border: 2px solid #DEE2E6;
+    padding: 5px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#ordertable th {
+    background-color: #E83E8C; /* สีฟ้า */
+    color: white;
+}
+
+
+
+/* ทำให้แถวที่เป็นเลขคี่มีพื้นหลังสีขาว */
+#ordertable tr:nth-child(odd) {
+    background-color: #fff; /* สีขาว */
+}
+
+/* ทำให้แถวที่เป็นเลขคู่มีพื้นหลังสีเทา */
+#ordertable tr:nth-child(even) {
+    background-color: #F2F2F2; /* สีเทา */
+}
+
+#iv_ordertable {
+    width: 100%;
+    border-collapse: collapse;
+    border: 5px solid  black ; /* ขอบรอบตาราง */
+    border-radius: 15px ; /* ขอบมน */
+    overflow: hidden; /* ทำให้ขอบที่มุมมีผล */
+    box-shadow:  0 0 20px rgb(255, 255, 255); /* เงารอบขอบเพื่อให้ชัดเจน */
+}
+
+#iv_ordertable th {
+    border: 2px solid #DEE2E6;
+    padding: 8px;
+    text-align: center;
+}
+
+#iv_ordertable td {
+    border: 2px solid #DEE2E6;
+    padding: 5px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#iv_ordertable th {
+    background-color: #17a2b8; /* สีฟ้า */
+    color: white;
+}
+
+
+
+/* ทำให้แถวที่เป็นเลขคี่มีพื้นหลังสีขาว */
+#iv_ordertable tr:nth-child(odd) {
+    background-color: #fff; /* สีขาว */
+}
+
+/* ทำให้แถวที่เป็นเลขคู่มีพื้นหลังสีเทา */
+#iv_ordertable tr:nth-child(even) {
+    background-color: #F2F2F2; /* สีเทา */
+}
+
+
+#orderperbill {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #0066CB;
+    color: #FCFF84;
+    border: 1px solid #DEE2E6;
+
+}
+
+#orderperbill td {
+    border: 0px solid #DEE2E6;
+    /* padding: 15px; */
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>DataTables Checkbox Example</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
+
+  <!-- Plugin datatables-checkboxes -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+  <script src="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
+  <link rel="stylesheet" href="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css">
+</head>
+<body>
+  <h2>ตัวอย่าง DataTable + Checkbox</h2>
+  <form id="frm-example">
+    <table id="example" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th></th> <!-- checkbox column -->
+          <th>ชื่อ</th>
+          <th>ตำแหน่ง</th>
+          <th>ออฟฟิศ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td></td><td>สมชาย</td><td>Developer</td><td>Bangkok</td></tr>
+        <tr><td></td><td>สมศรี</td><td>Designer</td><td>Chiang Mai</td></tr>
+        <tr><td></td><td>อนันต์</td><td>Manager</td><td>Phuket</td></tr>
+        <tr><td></td><td>วิภา</td><td>Tester</td><td>Khon Kaen</td></tr>
+      </tbody>
+    </table>
+
+    <button type="submit">แสดงข้อมูลที่เลือก</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    $(document).ready(function() {
+      var table = $('#example').DataTable({
+        'columnDefs': [
+          {
+            'targets': 0,
+            'checkboxes': {
+              'selectRow': true
+            }
+          }
+        ],
+        'select': {
+          'style': 'multi'
+        },
+        'order': [[1, 'asc']]
+      });
+
+      // เมื่อกด submit form
+      $('#frm-example').on('submit', function(e){
+        e.preventDefault();
+        var rows_selected = table.column(0).checkboxes.selected();
+
+        var selectedData = [];
+        $.each(rows_selected, function(index, rowId){
+          selectedData.push(rowId);
+        });
+
+        $('#result').html('<b>คุณเลือกแถว:</b><br>' + selectedData.join('<br>'));
+      });
+    });
+  </script>
+</body>
+</html>

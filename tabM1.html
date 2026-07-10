@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Nav Tabs (1 แถว) + Overflow เป็น Dropdown</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* บังคับ 1 แถวเสมอ */
+      .nav-tabs.flex-nowrap {
+        flex-wrap: nowrap;
+      }
+      .nav-tabs .nav-link {
+        white-space: nowrap;
+      }
+      /* กันเมนูโดนบัง */
+      .nav-tabs {
+        overflow: visible;
+      }
+      /* โทนสวยขึ้นนิดหน่อย */
+      body {
+        background: #f7f7fb;
+      }
+      .card {
+        border-radius: 14px;
+      }
+    </style>
+  </head>
+  <body class="p-4">
+    <div class="container" style="max-width: 1100px">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h4 class="mb-3">Tabs (แถวเดียว) + มากไปลง “More…”</h4>
+
+          <!-- Nav Tabs: ใส่ class flex-nowrap เพื่อบังคับ 1 แถว -->
+          <ul
+            class="nav nav-tabs flex-nowrap"
+            id="myTabs"
+            role="tablist"
+            data-overflow="dropdown"
+            data-label="More…"
+          >
+            <!-- ตัวอย่างแท็บเริ่มต้น (จะเพิ่ม/ลดได้ตามใจ) -->
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="t1-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t1"
+                role="tab"
+                aria-controls="t1"
+                aria-selected="true"
+              >
+                Overview
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="t2-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t2"
+                role="tab"
+                aria-controls="t2"
+              >
+                Reports
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="t3-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t3"
+                role="tab"
+                aria-controls="t3"
+              >
+                Analytics
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="t4-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t4"
+                role="tab"
+                aria-controls="t4"
+              >
+                Settings
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="t5-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t5"
+                role="tab"
+                aria-controls="t5"
+              >
+                Billing
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="t6-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t6"
+                role="tab"
+                aria-controls="t6"
+              >
+                Team
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="t7-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t7"
+                role="tab"
+                aria-controls="t7"
+              >
+                Audit
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="t8-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t8"
+                role="tab"
+                aria-controls="t8"
+              >
+                Integrations
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="t9-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t9"
+                role="tab"
+                aria-controls="t9"
+              >
+                Exports
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="t10-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#t10"
+                role="tab"
+                aria-controls="t10"
+              >
+                Advanced
+              </button>
+            </li>
+
+            <!-- Dropdown “More…” (ปลั๊กอินจะคุมเอง) -->
+            <li class="nav-item dropdown d-none" role="presentation" data-more>
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                >More…</a
+              >
+              <ul class="dropdown-menu dropdown-menu-end" data-more-menu></ul>
+            </li>
+          </ul>
+
+          <div
+            class="tab-content border border-top-0 p-3 bg-white rounded-bottom"
+          >
+            <div
+              class="tab-pane fade show active"
+              id="t1"
+              role="tabpanel"
+              aria-labelledby="t1-tab"
+            >
+              สรุปภาพรวม
+            </div>
+            <div
+              class="tab-pane fade"
+              id="t2"
+              role="tabpanel"
+              aria-labelledby="t2-tab"
+            >
+              รายงาน
+            </div>
+            <div
+              class="tab-pane fade"
+              id="t3"
+              role="tabpanel"
+              aria-labelledby="t3-tab"
+            >
+              วิเคราะห์
+            </div>
+            <div
+              class="tab-pane fade"
+              id="t4"
+              role="tabpanel"
+              aria-labelledby="t4-tab"
+            >
+              ตั้งค่า
+            </div>
+            <div
+              class="tab-pane fade"
+              id="t5"
+              role="tabpanel"
+              aria-labelledby="t5-tab"
+            >
+              บิลลิ่ง
+            </div>
+            <div
+              class="tab-pane fade"
+              id="t6"
+              role="tabpanel"
+              aria-labelledby="t6-tab"
+            >
+              ทีมงาน
+            </div>
+            <div
+              class="tab-pane fade"
+              id="t7"
+              role="tabpanel"
+              aria-labelledby="t7-tab"
+            >
+              ตรวจสอบ
+            </div>
+            <div
+              class="tab-pane fade"
+              id="t8"
+              role="tabpanel"
+              aria-labelledby="t8-tab"
+            >
+              เชื่อมต่อภายนอก
+            </div>
+            <div
+              class="tab-pane fade"
+              id="t9"
+              role="tabpanel"
+              aria-labelledby="t9-tab"
+            >
+              ส่งออก
+            </div>
+            <div
+              class="tab-pane fade"
+              id="t10"
+              role="tabpanel"
+              aria-labelledby="t10-tab"
+            >
+              ขั้นสูง
+            </div>
+          </div>
+
+          <!-- ปุ่มเดโม: เพิ่มแท็บระหว่างใช้งาน เพื่อทดสอบปลั๊กอิน -->
+          <div class="mt-3">
+            <button class="btn btn-outline-primary btn-sm" id="addTab">
+              + เพิ่มแท็บ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Bundle (รวม Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      /**
+       * Mini “Plugin” : Tab Overflow → Dropdown (Bootstrap 5)
+       * ใช้งาน: ใส่ data-overflow="dropdown" ใน <ul.nav-tabs> และมีโหนด [data-more] เป็น dropdown
+       * ออปชัน: data-label="More…" เปลี่ยนชื่อปุ่ม
+       */
+      (function () {
+        function initTabOverflow(navUl) {
+          const moreLi = navUl.querySelector("[data-more]");
+          const moreMenu = navUl.querySelector("[data-more-menu]");
+          const moreBtn = moreLi?.querySelector(".dropdown-toggle");
+          if (!moreLi || !moreMenu || !moreBtn) return;
+
+          // label ปุ่ม
+          const label = navUl.getAttribute("data-label") || "More…";
+          moreBtn.textContent = label;
+
+          // helper
+          const tabLis = () => [
+            ...navUl.querySelectorAll(":scope > li.nav-item:not([data-more])"),
+          ];
+
+          function clearDropdown() {
+            moreMenu.innerHTML = "";
+            moreLi.classList.add("d-none");
+            moreBtn.classList.remove("active");
+          }
+
+          function makeDropdownItemFrom(li) {
+            const btn = li.querySelector(".nav-link");
+            const text = btn?.textContent?.trim() || "Item";
+            const a = document.createElement("a");
+            a.className = "dropdown-item";
+            a.href = "#";
+            a.textContent = text;
+            a.addEventListener("click", (e) => {
+              e.preventDefault();
+              btn.click(); // เรียกใช้แท็บเดิม เพื่อให้ระบบ tab ของ Bootstrap จัดการ active ให้ครบ
+            });
+            const wrap = document.createElement("li");
+            wrap.appendChild(a);
+            return wrap;
+          }
+
+          function redistribute() {
+            // แสดงทุกแท็บก่อน (เริ่มคำนวณใหม่)
+            tabLis().forEach((li) => li.classList.remove("d-none"));
+            clearDropdown();
+
+            const navWidth = navUl.clientWidth;
+            // กันที่ปุ่ม More (เผื่อไว้)
+            const reserve = 90;
+
+            let used = 0;
+            const overflow = [];
+            tabLis().forEach((li) => {
+              const w = Math.ceil(li.getBoundingClientRect().width);
+              if (used + w + reserve <= navWidth) {
+                used += w;
+              } else {
+                overflow.push(li);
+              }
+            });
+
+            if (overflow.length) {
+              moreLi.classList.remove("d-none");
+              overflow.forEach((li) => {
+                li.classList.add("d-none");
+                moreMenu.appendChild(makeDropdownItemFrom(li));
+              });
+              // ถ้าแท็บ active อยู่ในกลุ่มที่ซ่อน ให้ทำให้ More เป็น active
+              const hiddenHasActive = overflow.some((li) =>
+                li.querySelector(".nav-link.active")
+              );
+              if (hiddenHasActive) moreBtn.classList.add("active");
+            }
+          }
+
+          // คำนวณใหม่เมื่อ:
+          const ro = new ResizeObserver(redistribute);
+          ro.observe(navUl);
+
+          // เผื่อมีการเพิ่ม/ลบแท็บแบบไดนามิก
+          const mo = new MutationObserver(() => setTimeout(redistribute));
+          mo.observe(navUl, { childList: true, subtree: true });
+
+          // เผื่อฟอนต์/เลย์เอาท์ยังไม่นิ่ง
+          window.addEventListener("load", () => {
+            redistribute();
+            setTimeout(redistribute, 60);
+          });
+
+          // sync ปุ่ม More เมื่อเปลี่ยนแท็บ
+          navUl.addEventListener("shown.bs.tab", () => {
+            const anyHiddenActive = !!navUl.querySelector(
+              "li.nav-item.d-none .nav-link.active"
+            );
+            moreBtn.classList.toggle("active", anyHiddenActive);
+          });
+
+          // เผื่อกรณี container ขยายจากภายนอก
+          window.addEventListener("resize", redistribute);
+        }
+
+        // auto-init ทุก .nav-tabs ที่ประกาศ data-overflow="dropdown"
+        document
+          .querySelectorAll('.nav.nav-tabs[data-overflow="dropdown"]')
+          .forEach(initTabOverflow);
+
+        // DEMO: เพิ่มแท็บใหม่แบบไดนามิก
+        const addBtn = document.getElementById("addTab");
+        addBtn?.addEventListener("click", () => {
+          const navUl = document.getElementById("myTabs");
+          const idx =
+            navUl.querySelectorAll(":scope > li.nav-item:not([data-more])")
+              .length + 1;
+          const newId = `dyn${idx}`;
+
+          const li = document.createElement("li");
+          li.className = "nav-item";
+          li.innerHTML = `
+      <button class="nav-link" id="${newId}-tab" data-bs-toggle="tab" data-bs-target="#${newId}" role="tab" aria-controls="${newId}">
+        Tab ${idx}
+      </button>`;
+          const moreLi = navUl.querySelector("[data-more]");
+          navUl.insertBefore(li, moreLi);
+
+          const pane = document.createElement("div");
+          pane.className = "tab-pane fade";
+          pane.id = newId;
+          pane.role = "tabpanel";
+          pane.setAttribute("aria-labelledby", `${newId}-tab`);
+          pane.innerHTML = `แท็บที่เพิ่มมาใหม่ #${idx}`;
+          document.querySelector(".tab-content").appendChild(pane);
+        });
+      })();
+    </script>
+  </body>
+</html>
